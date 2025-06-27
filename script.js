@@ -5,7 +5,6 @@ const pauseBtn = document.getElementById('pauseBtn');
 const resetBtn = document.getElementById('resetBtn');
 const installBtn = document.getElementById('installBtn');
 const countdownMessage = document.getElementById('countdownMessage');
-const beepSound = document.getElementById('beepSound');
 const bell1 = document.getElementById('bell1'); // iniciar y descanso->trabajo
 const bell2 = document.getElementById('bell2'); // trabajo->descanso
 const bell3 = document.getElementById('bell3'); // fin total
@@ -100,8 +99,8 @@ function startInitialCountdown() {
 
   // Mostrar mensaje inicial con cuenta regresiva 5s
   form.style.display = 'none';
-  pauseBtn.style.display = 'inline-block';
-  resetBtn.style.display = 'inline-block';
+  pauseBtn.style.display = 'none'; // Oculta pausa
+  resetBtn.style.display = 'none'; // Oculta reset
   countdownMessage.style.display = 'block';
   timerDisplay.textContent = '00:00';
   roundDisplay.textContent = '';
@@ -109,16 +108,16 @@ function startInitialCountdown() {
 
   let countdown = 5;
   countdownMessage.textContent = `Iniciando en ${countdown} segundos...`;
-  beepSound.play();
 
   countdownInterval = setInterval(() => {
     countdown--;
     if (countdown > 0) {
       countdownMessage.textContent = `Iniciando en ${countdown} segundos...`;
-      beepSound.play();
     } else {
       clearInterval(countdownInterval);
       countdownMessage.textContent = '';
+      pauseBtn.style.display = 'inline-block'; // Muestra pausa
+      resetBtn.style.display = 'inline-block'; // Muestra reset
       playBell1(); // Solo acá suena bell1 al empezar el timer real
       startTimer();
     }
@@ -199,11 +198,6 @@ function setBackground(color) {
       body.style.backgroundColor = '#fca5a5'; // tailwind red-300 light
     }
   }
-}
-
-function playBeep() {
-  beepSound.currentTime = 0;
-  beepSound.play();
 }
 
 function playBell1() {
