@@ -111,6 +111,9 @@ function startInitialCountdown() {
 
   countdownInterval = setInterval(() => {
     countdown--;
+    if (countdown === 3) {
+      playBell1(); // Suena bell1 a los 3 segundos restantes
+    }
     if (countdown > 0) {
       countdownMessage.textContent = `Iniciando en ${countdown} segundos...`;
     } else {
@@ -118,7 +121,6 @@ function startInitialCountdown() {
       countdownMessage.textContent = '';
       pauseBtn.style.display = 'inline-block'; // Muestra pausa
       resetBtn.style.display = 'inline-block'; // Muestra reset
-      playBell1(); // Solo acá suena bell1 al empezar el timer real
       startTimer();
     }
   }, 1000);
@@ -153,10 +155,15 @@ function runTimer() {
         currentRound++;
         isWorking = true;
         remainingSeconds = timerConfig.workDuration;
-        playBell1(); // descanso -> trabajo
+        // Bell1 debe sonar 3 segundos antes de la próxima ronda de entrenamiento
       }
       setBackground();
       updateRoundDisplay();
+    } else {
+      // Si faltan 3 segundos para el próximo entrenamiento, sonar bell1
+      if (!isWorking && remainingSeconds === 3) {
+        playBell1();
+      }
     }
     updateDisplay();
   }, 1000);
