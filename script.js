@@ -137,12 +137,8 @@ function runTimer() {
     remainingSeconds--;
     if (remainingSeconds < 0) {
       if (isWorking) {
-        isWorking = false;
-        remainingSeconds = timerConfig.restDuration;
-        playBell2(); // trabajo -> descanso
-      } else {
-        currentRound++;
-        if (currentRound > totalRounds) {
+        // Si es la última ronda, termina después del entrenamiento
+        if (currentRound === totalRounds) {
           clearInterval(interval);
           interval = null;
           playBell3(); // fin total
@@ -150,10 +146,15 @@ function runTimer() {
           resetTimer();
           return;
         } else {
-          isWorking = true;
-          remainingSeconds = timerConfig.workDuration;
-          playBell1(); // descanso -> trabajo
+          isWorking = false;
+          remainingSeconds = timerConfig.restDuration;
+          playBell2(); // trabajo -> descanso
         }
+      } else {
+        currentRound++;
+        isWorking = true;
+        remainingSeconds = timerConfig.workDuration;
+        playBell1(); // descanso -> trabajo
       }
       setBackground();
       updateRoundDisplay();
